@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0-android</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+
+		<!-- Note for MacCatalyst:
+		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
+		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+
+		<OutputType>Exe</OutputType>
+		<RootNamespace>UnityUaal.Maui</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!-- Display name -->
+		<ApplicationTitle>UnityUaal.Maui</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.unityuaal.maui</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+		<WindowsPackageType>None</WindowsPackageType>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Explicitly include native libraries from NativeLibs folder -->
+		<!-- ARM64-v8a Architecture -->
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\lib_burst_generated.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libarcore_sdk_c.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libarcore_sdk_jni.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libarpresto_api.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libc++_shared.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libgame.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libil2cpp.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libmain.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libunity.so" />
+		<AndroidNativeLibrary Include="NativeLibs\arm64-v8a\libUnityARCore.so" />
+
+		<!-- armeabi-v7a Architecture (typically with API tracing condition) -->
+		<!-- Add Condition="'$(AndroidEnableApiTracing)' == 'false'" to prevent issues if API tracing is enabled for 32-bit builds -->
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\lib_burst_generated.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libarcore_sdk_c.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libarcore_sdk_jni.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libarpresto_api.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libc++_shared.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libgame.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libil2cpp.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libmain.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libunity.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+		<AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\libUnityARCore.so" Condition="'$(AndroidEnableApiTracing)' == 'false'" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		  <ProjectReference Include="..\AndroidBridge\AndroidBridge.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.7" />
+		<PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.5.0.1" />
+		<PackageReference Include="Xamarin.AndroidX.Fragment.Ktx" Version="1.8.6.1" />
+	</ItemGroup>
+</Project>

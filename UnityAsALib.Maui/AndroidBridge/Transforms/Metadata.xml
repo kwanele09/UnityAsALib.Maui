@@ -1,0 +1,62 @@
+﻿<metadata>
+
+	<attr path="/api/package[@name='com.google.ar.core']/class[@name='Earth']" name="managedFinalize" assembly="AndroidBridge">false</attr>
+	<attr path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']" name="managedFinalize" assembly="AndroidBridge">false</attr>
+
+	<remove-node path="/api/package[@name='com.unity3d.player']/interface[@name='p']" />
+	<remove-node path="/api/package[@name='com.unity3d.player.a']/interface[@name='b']" />
+	<remove-node path="/api/package[@name='com.unity3d.player']/interface[@name='h0']" />
+	<remove-node path="/api/package[@name='com.google.vr.dynamite.client']/class[@name='ObjectWrapper']" />
+	<remove-node path="/api/package[@name='com.unity3d.player']/class[@name='AudioVolumeHandler']" />
+	<remove-node path="/api/package[@name='com.unity3d.player.a']/class[@name='Camera2Wrapper']" />
+	<remove-node path="/api/package[@name='com.unity3d.player']/class[@name='OrientationLockListener']" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedFace']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedFace']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedFace']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedFace']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedImage']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedImage']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedImage']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='AugmentedImage']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='DepthPoint']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='DepthPoint']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='DepthPoint']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='DepthPoint']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Earth']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Earth']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Earth']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Earth']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='InstantPlacementPoint']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='InstantPlacementPoint']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='InstantPlacementPoint']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='InstantPlacementPoint']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Plane']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Plane']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Plane']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Plane']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Point']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Point']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Point']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Point']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']/method[@name='getAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']/method[@name='cb_getAnchors_GetAnchors_Ljava_util_Collection_']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']/method[@name='n_GetAnchors']" assembly="AndroidBridge" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']/method[@name='GetGetAnchorsHandler']" assembly="AndroidBridge" />
+
+	<remove-node path="/api/package[@name='com.unity3d.player']/class[@name='UnityPlayerGameActivity']/implements[@name='com.unity3d.player.IUnityPlayerSupport']" />
+
+	<attr path="/api/package[@name='com.google.ar.core']/class[@name='Earth']" name="managedFinalize" assembly="AndroidBridge">false</attr>
+	<attr path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']" name="managedFinalize" assembly="AndroidBridge">false</attr>
+
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='Earth']/method[@name='finalize']" />
+	<remove-node path="/api/package[@name='com.google.ar.core']/class[@name='StreetscapeGeometry']/method[@name='finalize']" />
+	<remove-node path="/api/package[@name='com.unity3d.player']/interface[@name='p']" />
+</metadata>

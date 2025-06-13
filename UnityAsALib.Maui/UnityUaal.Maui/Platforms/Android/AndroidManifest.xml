@@ -1,0 +1,32 @@
+﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.companyname.unityuaalmaui"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="35"/>
+
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+	<uses-feature android:name="android.hardware.camera" android:required="true"/>
+	<uses-feature android:name="android.hardware.camera.ar" android:required="true" />
+
+	<application
+        android:largeHeap="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/appicon"
+        android:label="UnityUaalMaui"
+        tools:replace="android:allowBackup">
+
+		<activity
+            android:name="com.unity3d.player.UnityPlayerGameActivity"
+            android:theme="@style/UnityThemeSelector"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            tools:replace="android:theme,android:configChanges">
+		</activity>
+	</application>
+</manifest>

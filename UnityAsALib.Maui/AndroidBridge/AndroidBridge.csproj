@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0-android</TargetFramework>
+		<SupportedOSPlatformVersion>33</SupportedOSPlatformVersion>
+		<TargetSdkVersion>33</TargetSdkVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AndroidUseDesignerAssembly>true</AndroidUseDesignerAssembly>
+		<IsTrimmable>true</IsTrimmable>
+		<OutputType>Library</OutputType>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<AndroidGenerateResourceDesigner>true</AndroidGenerateResourceDesigner>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AndroidLibrary Include="Jars\unityLibrary-release.aar" />
+		<AndroidLibrary Include="Jars\UnityARCore.aar" />
+		<AndroidLibrary Include="Jars\games-activity-4.0.0.aar" />
+		<AndroidLibrary Include="Jars\core-1.49.0.aar" />
+		<AndroidLibrary Include="Jars\unityandroidpermissions.aar" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.7" />
+		<PackageReference Include="Xamarin.AndroidX.Core" Version="1.16.0.2" />
+		<PackageReference Include="Xamarin.Google.Android.Play.Core" Version="1.10.3.18" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Base" Version="118.7.0.2" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Games" Version="123.2.0.6" />
+		<PackageReference Include="Xamarin.GooglePlayServices.Tasks" Version="118.3.0.2" />
+	</ItemGroup>
+</Project>

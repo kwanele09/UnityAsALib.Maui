@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="UnityThemeSelector" parent="Theme.MaterialComponents.Light.NoActionBar">
+		<item name="android:windowBackground">@android:color/white</item>
+		<item name="android:textColorPrimary">#000000</item>
+	</style>
+</resources>
