@@ -1,0 +1,35 @@
+name: Build .NET MAUI Android Projects
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Install .NET MAUI workload
+      run: dotnet workload install maui
+
+    - name: Restore AndroidBridge project
+      run: dotnet restore UnityAsALib.Maui/AndroidBridge/AndroidBridge.csproj
+
+    - name: Restore UnityUaal.Maui project
+      run: dotnet restore UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj
+
+    - name: Build AndroidBridge project
+      run: dotnet build UnityAsALib.Maui/AndroidBridge/AndroidBridge.csproj -c Release -f net9.0-android --no-restore
+
+    - name: Build UnityUaal.Maui project
+      run: dotnet build UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj -c Release -f net9.0-android --no-restore
