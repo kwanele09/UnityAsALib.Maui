@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
-
 ## Integrating Unity AR with .NET MAUI: A Comprehensive Guide
 
 This Markdown document provides a structured, developer-friendly summary of the process for integrating a Unity Augmented Reality (AR) project into a .NET MAUI application, with a focus on Android deployment. It covers all major steps, from Unity setup to MAUI integration and troubleshooting.
