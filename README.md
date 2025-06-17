@@ -1,217 +1,127 @@
-Integrating Unity AR with .NET MAUI: A Comprehensive Guide
-This repository demonstrates a successful integration of a Unity Augmented Reality (AR) project into a .NET MAUI application, specifically targeting Android. This guide will walk you through the entire process, including common pitfalls and solutions, enabling you to build your own hybrid AR apps.
+## Integrating Unity AR with .NET MAUI: A Comprehensive Guide
 
-Table of Contents
-Project Overview
+This README outlines the process of integrating a Unity AR project with a .NET MAUI application. It covers setup in Unity, preparing Android libraries, configuring your MAUI project, and troubleshooting.
 
-Prerequisites
+---
 
-Part 1: Unity Project Setup & Export
+### Table of Contents
 
-Unity Project Configuration
+- [Project Overview](#project-overview)
+- [Prerequisites](#prerequisites)
+- [Part 1: Unity Project Setup \& Export](#part-1-unity-project-setup--export)
+- [Part 2: Processing Unity Export in Android Studio (Optional but Recommended)](#part-2-processing-unity-export-in-android-studio-optional-but-recommended)
+- [Part 3: .NET MAUI Project Setup \& Integration](#part-3-net-maui-project-setup--integration)
+- [Part 4: Troubleshooting Common Issues](#part-4-troubleshooting-common-issues)
 
-AR Foundation & ARCore Extensions
+---
 
-Unity Player Settings for Android
+## Project Overview
 
-Exporting as Android Library
+This guide provides a robust method for embedding Unity AR experiences within a .NET MAUI application. The key is to correctly integrate Unity's exported Android libraries (`.aar` files) and native shared objects (`.so` files) into the MAUI project, and to properly manage the Android lifecycle and permissions.
 
-Part 2: Processing Unity Export in Android Studio (Optional but Recommended)
+---
 
-Why Android Studio?
+## Prerequisites
 
-[Importing the unityLibrary Module](#impo rting-the-unitylibrary-module)
+Ensure you have the following installed:
 
-Extracting AARs and .so Files
+- **Unity Hub \& Unity Editor:** Compatible with AR Foundation (e.g., Unity 2022.3.x LTS or newer)
+- **Android Build Support for Unity:** Includes Android SDK \& NDK tools
+- **Android Studio:** Latest stable version
+- **Visual Studio:** Latest stable version with ".NET Multi-platform App UI development" workload
+- **Physical Android Device:** ARCore-compatible, with USB debugging enabled
 
-Troubleshooting Android Studio Build Issues
+---
 
-Part 3: .NET MAUI Project Setup & Integration
+## Part 1: Unity Project Setup \& Export
 
-Create Your MAUI Project
+### Unity Project Configuration
 
-Adding Android Libraries (AARs)
+- **Create a New Unity Project:** Use 3D (URP or HDRP) or a dedicated AR template.
+- **Install AR Foundation:** Window > Package Manager > Unity Registry > AR Foundation (latest verified version).
+- **Install ARCore Extensions:** Package Manager > ARCore Extensions (latest verified version).
 
-Adding Native Libraries (.so files)
 
-Custom UnityActivity.cs Implementation
+#### Scene Setup
 
-Updating AndroidManifest.xml
+- Ensure your scene contains an **AR Session** and an **AR Session Origin** GameObject.
+- Main Camera should be replaced or configured by the AR Session Origin to be an AR Camera.
+- Add AR interaction scripts (e.g., AR Plane Manager, AR Raycast Manager) and AR content.
 
-Launching Unity from MAUI
 
-Part 4: Troubleshooting Common Issues
+### Unity Player Settings for Android
 
-Type is defined multiple times Errors (Kotlin, GameTextInput, etc.)
+- **Build Settings:** File > Build Settings (select Android, Switch Platform if needed), then Player Settings...
+- **Company Name \& Product Name:** Set under Project Settings > Player.
+- **Minimum API Level:** API 24 (Android 7.0) or higher.
+- **Target API Level:** Highest supported by your Android Gradle Plugin (e.g., API 34 for Android 14).
+- **Scripting Backend:** IL2CPP.
+- **Target Architectures:** ARM64 (and optionally armeabi-v7a).
+- **Stripping Level:** Disabled or Minimal for development.
+- **Internet Access:** Required.
+- **Write Permission:** External (SDCard) if saving media.
+- **XR Plug-in Management:** Project Settings > XR Plug-in Management > Android tab > Ensure ARCore is checked.
 
-ClassNotFoundException: com.unity3d.plugin.UnityAndroidPermissions
 
-compileSdk Version Warnings
+### Exporting as Android Library
 
-Black Screen after Unity Splash (Camera Not Initializing)
+- **Build Settings:** File > Build Settings > Export Project.
+- Check **Export Android Project**.
+- Click **Export** and choose a destination folder (e.g., `C:\UnityAndroidExport`).
 
-Debugging with Logcat
+---
 
-1. Project Overview
-This guide aims to provide a robust method for embedding Unity AR experiences within a .NET MAUI application. The key is to correctly integrate Unity's exported Android libraries (.aar files) and native shared objects (.so files) into the MAUI project, and to properly manage the Android lifecycle and permissions.
+## Part 2: Processing Unity Export in Android Studio (Optional but Recommended)
 
-2. Prerequisites
-Before you start, ensure you have the following installed:
+### Why Android Studio?
 
-Unity Hub & Unity Editor: A version compatible with AR Foundation (e.g., Unity 2022.3.x LTS or newer).
+- Build and test the Unity library (`.aar`) standalone.
+- Inspect generated `build.gradle` files.
+- Extract required `.aar` and `.so` files for direct inclusion in your MAUI project.
 
-Android Build Support for Unity: Installed via Unity Hub (includes Android SDK & NDK tools).
 
-Android Studio: Latest stable version (for processing Unity export and general Android SDK management).
+### Importing the unityLibrary Module
 
-Visual Studio: Latest stable version with the ".NET Multi-platform App UI development" workload installed.
+- Open Android Studio.
+- File > Open > Navigate to your Unity export folder and select the `unityLibrary` subfolder.
+- Let it sync and download dependencies.
 
-Physical Android Device: An ARCore-compatible device for testing, with USB debugging enabled.
 
-3. Part 1: Unity Project Setup & Export
-Unity Project Configuration
-Create a New Unity Project: Start with a 3D (URP or HDRP) or a dedicated AR template.
+### Extracting AARs and .so Files
 
-Install AR Foundation: Go to Window > Package Manager. Ensure "Unity Registry" is selected. Install AR Foundation (latest verified compatible version).
+- **AARs:** `unityLibrary/build/outputs/aar/unityLibrary-release.aar` (or debug). Other essentials (e.g., `UnityARCore.aar`, `games-activity-4.0.0.aar`, `core-1.49.0.aar`, `unityandroidpermissions.aar`) are in `unityLibrary/libs/` or the Gradle cache.
+- **.so Files:** `unityLibrary/build/intermediates/cmake/release/obj/` (or debug/obj/), with folders for each ABI (e.g., `arm64-v8a`, `armeabi-v7a`).
 
-Install ARCore Extensions: In the Package Manager, install ARCore Extensions (latest verified compatible version). This is crucial for ARCore-specific features.
+**Recommended:** Create dedicated folders in your MAUI project (e.g., `Jars` for AARs, `NativeLibs` for .so files) and copy these files.
 
-Scene Setup:
+### Troubleshooting Android Studio Build Issues
 
-Ensure your scene contains an AR Session and an AR Session Origin GameObject.
+- **AGP Version Not Found:** Downgrade AGP version in `build.gradle` to a stable release.
+- **compileSdk Warnings:** Downgrade compileSdk in `build.gradle` to match AGP compatibility.
+- **Duplicate Class Errors:** Exclude duplicate dependencies in your `.csproj` (see Troubleshooting).
 
-Your Main Camera should be replaced or configured by the AR Session Origin to be an AR Camera.
+---
 
-Add any AR interaction scripts (e.g., AR Plane Manager, AR Raycast Manager) and your AR content.
+## Part 3: .NET MAUI Project Setup \& Integration
 
-Unity Player Settings for Android
-Go to File > Build Settings (ensure Android is selected as platform, Switch Platform if needed). Then click Player Settings....
+### Create Your MAUI Project
 
-Company Name & Product Name: Set these under Project Settings > Player > Company Name and Product Name. (e.g., DefaultCompany, UnityApp). These will be part of your Android package name.
+- In Visual Studio, create a new ".NET MAUI App" project.
+- Optionally, add a Class Library for native bindings.
 
-Other Settings:
 
-Minimum API Level: Set to API 24 (Android 7.0) or higher, as required by ARCore.
+### Adding Android Libraries (AARs)
 
-Target API Level: Set to the highest API level officially supported by your Android Gradle Plugin version. (e.g., API 34 for Android 14). This helps prevent compileSdk warnings in Android Studio later.
+- Create a `Jars` folder in your project.
+- Copy these AARs into `Jars`:
+    - `core-1.49.0.aar`
+    - `games-activity-4.0.0.aar`
+    - `UnityARCore.aar`
+    - `unityLibrary-release.aar`
+    - `unityandroidpermissions.aar`
+- Edit your `.csproj`:
 
-Scripting Backend: Set to IL2CPP. This is essential for performance and native library compatibility.
-
-Target Architectures: Check ARM64. armeabi-v7a is also good for broader compatibility, but ARM64 is increasingly standard.
-
-Stripping Level: For development, start with Disabled or Minimal to avoid IL2CPP stripping issues that can cause SIGSEGV crashes. You can increase this for release builds later, with caution.
-
-Configuration:
-
-Internet Access: Set to Required.
-
-Write Permission: Set to External (SDCard) (if saving media).
-
-XR Plug-in Management:
-
-Under Project Settings > XR Plug-in Management > Android tab, ensure ARCore is checked. This tells Unity to include the necessary ARCore libraries.
-
-Exporting as Android Library
-In File > Build Settings, click Export Project.
-
-Check Export Android Project.
-
-Click Export.
-
-Choose a destination folder (e.g., C:\UnityAndroidExport). This will create a Gradle project structure containing your unityLibrary and launcher modules.
-
-4. Part 2: Processing Unity Export in Android Studio (Optional but Recommended)
-Why Android Studio?
-Unity exports a full Gradle project. Android Studio allows you to:
-
-Build the Unity library (.aar) and test it standalone to verify functionality.
-
-Easily inspect the generated build.gradle files.
-
-Extract the necessary .aar and .so files for direct inclusion in your MAUI project. This avoids conflicts that might arise from NuGet packages.
-
-Importing the unityLibrary Module
-Open Android Studio.
-
-Select File > Open.
-
-Navigate to your Unity export folder (e.g., C:\UnityAndroidExport) and select the unityLibrary subfolder. Click OK.
-
-Android Studio will import it as a Gradle module. Let it sync and download dependencies.
-
-Extracting AARs and .so Files
-After a successful build of unityLibrary in Android Studio:
-
-Locate Generated AARs:
-
-In Android Studio, find your unityLibrary module in the Project view.
-
-Navigate to unityLibrary/build/outputs/aar/. You'll find unityLibrary-release.aar (or unityLibrary-debug.aar). This is your main Unity library.
-
-Other essential AARs (like UnityARCore.aar, games-activity-4.0.0.aar, unityandroidpermissions.aar, core-1.49.0.aar) will typically be found within the unityLibrary/libs/ folder of your original Unity export, or within the Gradle cache (~/.gradle/caches/). For a robust MAUI integration, it's best to copy these directly.
-
-Locate Generated .so Files:
-
-Navigate to unityLibrary/build/intermediates/cmake/release/obj/ (or debug/obj/).
-
-Inside, you'll find folders for each ABI (e.g., arm64-v8a, armeabi-v7a).
-
-Within each ABI folder, you'll find .so files like libil2cpp.so, libunity.so, libmain.so, libgame.so, libarcore_sdk_c.so, etc.
-
-Recommended Approach: Create a dedicated folder in your MAUI project (e.g., UnityUaal.Maui/Jars for AARs and UnityUaal.Maui/NativeLibs for .so files) and copy these collected files into them.
-
-Troubleshooting Android Studio Build Issues
-Plugin [id: 'com.android.application', version: 'X.Y.Z', apply: false] was not found:
-
-Cause: The AGP version specified is too new or not in the configured repositories.
-
-Solution: In your project-level build.gradle (the one in C:\Users\kwane\OneDrive\Desktop\Plugins\Library\build.gradle), change the AGP version (id 'com.android.application' version 'X.Y.Z') to a stable version like 8.4.1 or 8.5.0. Then Sync Gradle.
-
-We recommend using a newer Android Gradle plugin to use compileSdk = 36:
-
-Cause: Your compileSdk is higher than what your current AGP version was officially tested against.
-
-Solution: In your module-level build.gradle (e.g., unityLibrary/build.gradle), downgrade compileSdk to 35 (or 34 for Android 14) to match the AGP's tested compatibility. Keep targetSdk at the desired highest level.
-
-Duplicate class ... found in modules kotlin-stdlib-... (or games-activity-):
-
-Cause: Multiple versions of the same library (like Kotlin Standard Library or games-activity) are being included by different dependencies.
-
-Solution: This is complex.
-
-For Kotlin: In your UnityUaal.Maui.csproj, add ExcludeAssets="Compile" for Xamarin.Kotlin.StdLib, Xamarin.Kotlin.StdLib.Jdk7, Xamarin.Kotlin.StdLib.Jdk8 PackageReference updates.
-
-For games-activity: If you are explicitly including games-activity-4.0.0.aar, then ensure no NuGet package (Xamarin.GooglePlayServices.Games is a common culprit) is also pulling in a different version. You might need to remove the conflicting NuGet PackageReference if your explicitly included AAR is sufficient.
-
-5. Part 3: .NET MAUI Project Setup & Integration
-Create Your MAUI Project
-In Visual Studio, create a new ".NET MAUI App" project.
-
-Add a new project to your solution, either a Class Library (for AndroidBridge if you separate your native bindings) or directly use your MAUI project.
-
-Adding Android Libraries (AARs)
-These AARs are the packaged Android library modules that Unity exports or relies on.
-
-Create a folder named Jars (or similar) inside your UnityUaal.Maui project directory (e.g., UnityUaal.Maui/Jars).
-
-Copy the following AAR files into this Jars folder:
-
-core-1.49.0.aar
-
-games-activity-4.0.0.aar
-
-UnityARCore.aar
-
-unityLibrary-release.aar
-
-unityandroidpermissions.aar (CRUCIAL for ClassNotFoundException fix)
-
-Edit your UnityUaal.Maui.csproj file:
-
-Right-click UnityUaal.Maui project in Solution Explorer > Edit Project File.
-
-Add an <ItemGroup> for AndroidLibrary references:
-
+```xml
 <ItemGroup>
     <AndroidLibrary Include="Jars\core-1.49.0.aar" />
     <AndroidLibrary Include="Jars\games-activity-4.0.0.aar" />
@@ -219,57 +129,39 @@ Add an <ItemGroup> for AndroidLibrary references:
     <AndroidLibrary Include="Jars\unityLibrary-release.aar" />
     <AndroidLibrary Include="Jars\unityandroidpermissions.aar" />
 </ItemGroup>
+```
 
-Ensure any existing PackageReference entries for related Google Play Services are managed to avoid conflicts (see Troubleshooting section).
 
-Adding Native Libraries (.so files)
-These are the compiled native code libraries from Unity and ARCore.
+### Adding Native Libraries (.so files)
 
-Create a folder structure inside your UnityUaal.Maui project: NativeLibs/arm64-v8a and NativeLibs/armeabi-v7a.
+- Create folders: `NativeLibs/arm64-v8a` and `NativeLibs/armeabi-v7a`.
+- Copy these `.so` files into each ABI folder:
+    - `lib_burst_generated.so`
+    - `libarcore_sdk_c.so`
+    - `libarcore_sdk_jni.so`
+    - `libarpresto_api.so`
+    - `libc++_shared.so`
+    - `libgame.so`
+    - `libil2cpp.so`
+    - `libmain.so`
+    - `libunity.so`
+    - `libUnityARCore.so`
+- Edit your `.csproj`:
 
-Copy the following .so files into their respective ABI folders (e.g., libil2cpp.so goes into both arm64-v8a and armeabi-v7a):
-
-lib_burst_generated.so
-
-libarcore_sdk_c.so
-
-libarcore_sdk_jni.so
-
-libarpresto_api.so
-
-libc++_shared.so
-
-libgame.so
-
-libil2cpp.so
-
-libmain.so
-
-libunity.so
-
-libUnityARCore.so
-
-Edit your UnityUaal.Maui.csproj file:
-
-Visual Studio usually automatically includes .so files if placed in NativeLibs with correct ABI subfolders. However, explicitly defining them ensures proper inclusion. Add an <ItemGroup> for AndroidNativeLibrary:
-
+```xml
 <ItemGroup>
     <AndroidNativeLibrary Include="NativeLibs\arm64-v8a\*.so" />
     <AndroidNativeLibrary Include="NativeLibs\armeabi-v7a\*.so" />
-    <!-- Add more ABIs if needed, e.g., x86, x86_64 -->
+    <!-- Add more ABIs if needed -->
 </ItemGroup>
+```
 
-Custom UnityActivity.cs Implementation
-You need a custom Android.App.Activity to host the UnityPlayer. This file (UnityActivity.cs) will be in your UnityUaal.Maui/Platforms/Android folder.
 
-Key adjustments to your UnityActivity.cs:
+### Custom UnityActivity.cs Implementation
 
-Remove manual permission requests from OnCreate: Rely entirely on Unity's IUnityPermissionRequestSupport interface.
+Below is the complete example of a custom `UnityActivity.cs` that integrates UnityPlayer lifecycle management and permission handling in a .NET MAUI Android project:
 
-Implement IUnityPermissionRequestSupport: This interface is called by Unity when it needs permissions. Its RequestPermissions method must take the list of permissions Unity needs and pass them to the Android system.
-
-Correct Lifecycle Management: Ensure UnityPlayer methods (Pause, Resume, NewIntent, etc.) are correctly called in your Activity's lifecycle overrides.
-
+```csharp
 // UnityActivity.cs
 using Android.App;
 using Android.Content;
@@ -323,7 +215,6 @@ public class UnityActivity : Activity,
         // Permissions are now handled exclusively by Unity's IUnityPermissionRequestSupport callback.
 
         player = new UnityPlayerForActivityOrService(this, this); // 'this' for context, 'this' for IUnityPlayerLifecycleEvents
-
         SetContentView(player.FrameLayout);
         player.FrameLayout.RequestFocus();
 
@@ -387,68 +278,27 @@ public class UnityActivity : Activity,
     protected override void OnDestroy()
     {
         Log.Info(GetType().Name, $"{nameof(OnDestroy)}|{GetHashCode()}|");
-        if (player != null)
-        {
-            if (player is IDisposable disposablePlayer)
-            {
-                disposablePlayer.Dispose();
-                Log.Info(GetType().Name, "UnityPlayerForActivityOrService Disposed successfully.");
-            }
-            else
-            {
-                Log.Warn(GetType().Name, "UnityPlayerForActivityOrService does not implement IDisposable directly. " +
-                                         "Ensure its resources are properly released via its own API or native finalization.");
-            }
-            player = null;
-        }
-        UnityBridge.RegisterNativeBridge(null); // Unregister native bridge
         base.OnDestroy();
+        player?.Destroy();
     }
 
-    // --- IUnityPlayerLifecycleEvents (from Unity) ---
-    public void OnUnityPlayerQuitted()
+    public override void OnBackPressed()
     {
-        Log.Info(GetType().Name, $"{nameof(OnUnityPlayerQuitted)}|{GetHashCode()}|");
+        // Optional: Handle Unity back navigation
+        base.OnBackPressed();
     }
 
-    public void OnUnityPlayerUnloaded()
+    // --- IUnityPermissionRequestSupport Implementation ---
+    public void RequestPermissions(string[] permissions, IPermissionRequestResultCallback callback)
     {
-        Log.Info(GetType().Name, $"{nameof(OnUnityPlayerUnloaded)}|{GetHashCode()}|");
-        MoveTaskToBack(true);
-    }
-
-    // --- INativeUnityBridge (Your Custom Bridge) ---
-    public void SendContent(string eventName, string? eventContent)
-    {
-        var content = eventName + "|" + (eventContent ?? string.Empty);
-        UnityPlayer.UnitySendMessage("Bridge", "ReceiveContent", content);
-    }
-
-    // --- IUnityPermissionRequestSupport (Critical for Permissions) ---
-    public void RequestPermissions(PermissionRequest request)
-    {
-        int requestCode = _permissionRequestCode++;
-        _permissionRequests[requestCode] = request;
-        player?.AddPermissionRequest(request); // Important: Pass the request to the UnityPlayer wrapper
-
-        // --- CRITICAL FIX: Request all necessary AR/Camera permissions here ---
-        // Since the C# binding for PermissionRequest doesn't expose the permissions array,
-        // we proactively request all common AR/camera permissions when Unity triggers this.
-        string[] permissionsToRequest = new string[]
+        var requestCode = _permissionRequestCode++;
+        _permissionRequests[requestCode] = new PermissionRequest
         {
-            Manifest.Permission.Camera,
-            Manifest.Permission.RecordAudio, // Often needed for AR/video recording
-            Manifest.Permission.AccessFineLocation // Often needed for Geospatial AR and precise tracking
+            Permissions = permissions,
+            Callback = callback
         };
 
-        if (permissionsToRequest.Length == 0)
-        {
-            Log.Error(GetType().Name, $"Unity PermissionRequest for code {requestCode} contained no permissions to ask for. Skipping request.");
-            return;
-        }
-
-        Log.Info(GetType().Name, $"Requesting permissions for Unity (Code {requestCode}): {string.Join(", ", permissionsToRequest)}");
-        RequestPermissions(permissionsToRequest, requestCode); // This is the actual Android API call
+        RequestPermissions(permissions, requestCode);
     }
 
     public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
@@ -457,45 +307,33 @@ public class UnityActivity : Activity,
 
         if (_permissionRequests.TryGetValue(requestCode, out var request))
         {
-            // Pass the results back to Unity's PermissionResponse handler.
-            // grantResults need to be converted to int[] for Unity's expected format.
-            player?.PermissionResponse(this, requestCode, permissions, grantResults?.Select(g => (int)g).ToArray() ?? Array.Empty<int>());
+            bool allGranted = grantResults.All(r => r == Permission.Granted);
+            request.Callback.OnRequestPermissionsResult(allGranted);
             _permissionRequests.Remove(requestCode);
         }
     }
 
-    // --- Android Input Events (Forwarding to UnityPlayer) ---
-    public override bool DispatchKeyEvent(KeyEvent? e)
+    private class PermissionRequest
     {
-        Log.Info(GetType().Name, $"{nameof(DispatchKeyEvent)}|{GetHashCode()}|{e?.Action}");
-        if (e?.Action == KeyEventActions.Multiple)
-        {
-            return player?.InjectEvent(e) ?? base.DispatchKeyEvent(e);
-        }
-        return base.DispatchKeyEvent(e);
-    }
-
-    public override bool OnKeyUp(Keycode keyCode, KeyEvent? e)
-    {
-        Log.Info(GetType().Name, nameof(OnKeyUp));
-        return player?.InjectEvent(e) ?? base.OnKeyUp(keyCode, e);
-    }
-
-    public override bool OnKeyDown(Keycode keyCode, KeyEvent? e)
-    {
-        Log.Info(GetType().Name, nameof(OnKeyDown));
-        return player?.InjectEvent(e) ?? base.OnKeyDown(keyCode, e);
-    }
-
-    public override bool OnTouchEvent(MotionEvent? e)
-    {
-        Log.Info(GetType().Name, nameof(OnTouchEvent));
-        return player?.InjectEvent(e) ?? base.OnTouchEvent(e);
-    }
-
-    public override bool OnGenericMotionEvent(MotionEvent? e)
-    {
-        Log.Info(GetType().Name, nameof(OnGenericMotionEvent));
-        return player?.InjectEvent(e) ?? base.OnGenericMotionEvent(e);
+        public string[] Permissions { get; set; }
+        public IPermissionRequestResultCallback Callback { get; set; }
     }
 }
+```
+
+
+---
+
+## Part 4: Troubleshooting Common Issues
+
+- **Type is defined multiple times:** Exclude duplicate dependencies in `.csproj`.
+- **ClassNotFoundException:** Ensure `unityandroidpermissions.aar` is included.
+- **compileSdk Version Warnings:** Align compileSdk with AGP compatibility.
+- **Black Screen after Unity Splash:** Check camera permissions and ARCore initialization.
+- **Debugging:** Use Logcat for diagnostics.
+
+---
+
+> For detailed code samples, error solutions, and further explanations, refer to this guide and your project’s README.
+
+---
