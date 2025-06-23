@@ -36,31 +36,30 @@ workflows:
       - '**/*.aab'
 
   maui-ios-simulator-build:
-    name: Build .NET MAUI iOS Simulator
-    max_build_duration: 120
-    instance_type: mac_mini_m2
-    environment:
-      xcode: latest
-      vars:
-        DOTNET_PATH: $CM_BUILD_DIR/dotnet
-        DOTNET: $CM_BUILD_DIR/dotnet/dotnet
-    scripts:
-      - name: Install .NET SDK 7.0
-        script: |
-          wget https://dot.net/v1/dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --channel 7.0 --install-dir $DOTNET_PATH
-      - name: Install .NET MAUI workloads
-        script: |
-          $DOTNET nuget locals all --clear
-          $DOTNET workload restore
-          # Removed explicit --source here as well
-          $DOTNET workload install maui maui-ios
-      - name: Restore UnityUaal.Maui project
-        script: |
-          $DOTNET restore UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj
-      - name: Build UnityUaal.Maui for iOS Simulator
-        script: |
-          $DOTNET build UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj -c Debug -f net7.0-ios --no-restore -o ./artifacts
-    artifacts:
-      - ./artifacts/*.app
+     name: Build .NET MAUI iOS Simulator
+     max_build_duration: 120
+     instance_type: mac_mini_m2
+     environment:
+       xcode: latest
+       vars:
+         DOTNET_PATH: $CM_BUILD_DIR/dotnet
+         DOTNET: $CM_BUILD_DIR/dotnet/dotnet
+     scripts:
+       - name: Install .NET SDK 7.0
+         script: |
+           wget https://dot.net/v1/dotnet-install.sh
+           chmod +x dotnet-install.sh
+           ./dotnet-install.sh --channel 7.0 --install-dir $DOTNET_PATH
+       - name: Install .NET MAUI workloads
+         script: |
+           $DOTNET nuget locals all --clear
+           $DOTNET workload restore
+           $DOTNET workload install maui maui-ios
+       - name: Restore UnityUaal.Maui project only
+         script: |
+           $DOTNET restore UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj
+       - name: Build UnityUaal.Maui for iOS Simulator only
+         script: |
+           $DOTNET build UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj -c Debug -f net7.0-ios --no-restore -o ./artifacts
+     artifacts:
+        - ./artifacts/*.app
