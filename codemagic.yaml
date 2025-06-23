@@ -15,7 +15,10 @@ workflows:
           ./dotnet-install.sh --channel 9.0 --install-dir $DOTNET_PATH
       - name: Install .NET MAUI workloads
         script: |
-          $DOTNET workload install maui maui-android --source https://aka.ms/dotnet9/nuget/index.json
+          $DOTNET nuget locals all --clear
+          $DOTNET workload restore
+          # Removed explicit --source to fix workload install failure
+          $DOTNET workload install maui maui-android maui-ios
       - name: Restore AndroidBridge project
         script: |
           $DOTNET restore UnityAsALib.Maui/AndroidBridge/AndroidBridge.csproj
@@ -49,7 +52,10 @@ workflows:
           ./dotnet-install.sh --channel 7.0 --install-dir $DOTNET_PATH
       - name: Install .NET MAUI workloads
         script: |
-          $DOTNET workload install maui maui-ios --source https://aka.ms/dotnet7/nuget/index.json
+          $DOTNET nuget locals all --clear
+          $DOTNET workload restore
+          # Removed explicit --source here as well
+          $DOTNET workload install maui maui-ios
       - name: Restore UnityUaal.Maui project
         script: |
           $DOTNET restore UnityAsALib.Maui/UnityUaal.Maui/UnityUaal.Maui.csproj
